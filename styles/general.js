@@ -11,4 +11,3 @@ export const defaultScreen = StyleSheet.create({
         width: '100%'
     }
 });
-  
