@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "65910213096",
+    "project_id": "whigo-6cf0a",
+    "storage_bucket": "whigo-6cf0a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:65910213096:android:956fb6c4fa9c063cf4bc5d",
+        "android_client_info": {
+          "package_name": "com.whigo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "65910213096-117msr34ot6649gdfkrhmfuk6hgurq7h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzwCL_peKXRCIh-H7_zY9K6mhpKZES1dY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "65910213096-117msr34ot6649gdfkrhmfuk6hgurq7h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "65910213096-6og1k60jcit13q30fa8aubecsp831v2d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.whigo"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

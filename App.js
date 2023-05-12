@@ -1,9 +1,9 @@
+// import firestore from "@react-native-firebase/firestore"
 import React, { useState, useEffect, useRef } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import MapView, { MapPressEvent, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { defaultScreen } from './styles/general';
 import { mapStyle, customMap } from './styles/map';
-
 import {
     requestForegroundPermissionsAsync,
     getCurrentPositionAsync,
@@ -11,6 +11,7 @@ import {
     watchPositionAsync,
     LocationAccuracy
 } from 'expo-location';
+
 
 export default function App() {
   const [location, setLocation] = useState(null);
@@ -20,9 +21,9 @@ export default function App() {
   useEffect(() => {
     (async () => {
       
-        const { granted } = await requestForegroundPermissionsAsync();
+        const { status } = await requestForegroundPermissionsAsync();
         
-        if(granted){
+        if(status == "granted"){
             const currentPosition = await getCurrentPositionAsync();
             setLocation(currentPosition);
         }
@@ -37,10 +38,10 @@ export default function App() {
             distanceInterval: 1
         }, (response) => {
             setLocation(response);
-            // mapRef.current?.animateCamera({
-            //     //pitch: 70,
-            //     center: response.coords
-            // })
+             mapRef.current?.animateCamera({
+                 //pitch: 70,
+                 center: response.coords
+             })
         });
     })();
   }, []);
@@ -65,6 +66,16 @@ export default function App() {
 
     setMarkers(oldArray => [...oldArray, dados])
   }
+
+
+    // useEffect(()=>{
+    //     (async() => {
+    //         firestore().collection("teste").add({
+    //             name: "Rua dos Plátanos",
+    //             old: 255,
+    //         });
+    //     })();
+    // },[])
 
   return (
     <View style={defaultScreen.container}>
@@ -104,7 +115,6 @@ export default function App() {
 
 
     </View>
-    
-
   );
 }
+
