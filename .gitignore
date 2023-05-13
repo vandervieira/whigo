@@ -55,4 +55,5 @@ web-build/
 dist/
 
 #Environment variables
+/ios/.env
 .env
