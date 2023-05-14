@@ -3,12 +3,15 @@
 #import <GoogleMaps/GoogleMaps.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTLinkingManager.h>
+#import "RNCConfig.h"
+
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [GMSServices provideAPIKey:@"AIzaSyASbgGyNiTkiWRZEJ399x8RqSEpP_Jxd8k"];
+  NSString *apiUrl = [RNCConfig envFor:@"GOOGLE_MAPS_API_KEY"];
+  [GMSServices provideAPIKey: apiUrl];
   [FIRApp configure];
   self.moduleName = @"main";
 
