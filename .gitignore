@@ -54,6 +54,5 @@ yarn-error.log
 web-build/
 dist/
 
-#Environment variables
-/ios/.env
+# environment variables
 .env
