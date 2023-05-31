@@ -3,7 +3,8 @@ import { StyleSheet } from "react-native";
 export const mapStyle = StyleSheet.create({ //Estilo geral do mapa na tela
     map: {
       flex: 1,
-      width: '100%'
+      width: '100%',
+      ...StyleSheet.absoluteFillObject
     }
 });
 
