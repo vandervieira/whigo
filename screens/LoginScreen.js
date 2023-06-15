@@ -42,7 +42,7 @@ export default class LoginScreen extends React.Component {
         <Image
           source={require("../assets/authHeader.png")}
           style={{
-            width: 420,
+            width: 450,
             height: 300,
             resizeMode: "stretch",
             marginTop: -100,
@@ -54,11 +54,11 @@ export default class LoginScreen extends React.Component {
           source={require("../assets/authFooter.png")}
           style={{
             position: "absolute",
-            width: 420,
+            width: 470,
             height: 300,
             resizeMode: "stretch",
-            bottom: -170,
-            right: -20,
+            bottom: -140,
+            right: -40,
           }}
         ></Image>
 
@@ -109,7 +109,7 @@ export default class LoginScreen extends React.Component {
           style={{ alignSelf: "center", marginTop: 32 }}
           onPress={() => this.props.navigation.navigate("Cadastro")}
         >
-          <Text style={{ color: "#414959", fontSize: 13 }}>
+          <Text style={{ color: "#8A8F9E", fontSize: 13 }}>
             Novo no aplicativo? <Text style={{ fontWeight: "500", color: "#7878F5" }}>Cadastrar-se</Text>
           </Text>
         </TouchableOpacity>
@@ -120,9 +120,11 @@ export default class LoginScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
+    // backgroundColor: "#2C2C2E",
     flex: 1,
   },
   greeting: {
+    color: "#8A8F9E",
     marginTop: -32,
     fontSize: 18,
     fontWeight: "400",
@@ -154,7 +156,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     height: 40,
     fontSize: 15,
-    color: "#161F3D",
+    color: "#1C1C1E",
   },
   button: {
     marginHorizontal: 30,

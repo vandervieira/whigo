@@ -45,8 +45,6 @@ export default class RegisterScreen extends React.Component {
         <Image
           source={require("../assets/authHeader.png")}
           style={{
-            width: 420,
-            height: 300,
             resizeMode: "stretch",
             marginTop: -50,
             marginLeft: -20,
@@ -57,11 +55,11 @@ export default class RegisterScreen extends React.Component {
           source={require("../assets/authFooter.png")}
           style={{
             position: "absolute",
-            width: 420,
+            width: 450,
             height: 300,
             resizeMode: "stretch",
             bottom: -200,
-            right: -20,
+            right: -40,
           }}
         ></Image>
 

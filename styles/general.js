@@ -7,7 +7,4 @@ export const defaultScreen = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
-    map: {
-        width: '100%'
-    }
 });
