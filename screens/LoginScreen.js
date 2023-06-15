@@ -1,8 +1,12 @@
 import React from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar, Image, LayoutAnimation } from "react-native";
 import auth from "@react-native-firebase/auth";
 
 export default class LoginScreen extends React.Component {
+  static navigationOptions = {
+    headerShown: null,
+  };
+
   state = {
     email: "",
     password: "",
@@ -30,9 +34,45 @@ export default class LoginScreen extends React.Component {
   };
 
   render() {
+    LayoutAnimation.easeInEaseOut();
     return (
       <View style={styles.container}>
-        <Text style={styles.greeting}>{`Bem-vindo ao Whigo!`}</Text>
+        <StatusBar barStyle="light-content"></StatusBar>
+
+        <Image
+          source={require("../assets/authHeader.png")}
+          style={{
+            width: 420,
+            height: 300,
+            resizeMode: "stretch",
+            marginTop: -100,
+            marginLeft: -20,
+          }}
+        ></Image>
+
+        <Image
+          source={require("../assets/authFooter.png")}
+          style={{
+            position: "absolute",
+            width: 420,
+            height: 300,
+            resizeMode: "stretch",
+            bottom: -170,
+            right: -20,
+          }}
+        ></Image>
+
+        <Image
+          source={require("../assets/loginLogo.png")}
+          style={{
+            marginTop: -100,
+            alignSelf: "center",
+            width: 200,
+            height: 200,
+          }}
+        ></Image>
+
+        <Text style={styles.greeting}>{`Bem-vindo\nao Whigo!`}</Text>
 
         <View style={styles.errorMessage}>
           {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
@@ -65,9 +105,9 @@ export default class LoginScreen extends React.Component {
           <Text style={{ color: "#FFF", fontWeight: "500" }}>Entrar</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity 
-        style={{ alignSelf: "center", marginTop: 32 }}
-        onPress={() => this.props.navigation.navigate("Cadastro")}
+        <TouchableOpacity
+          style={{ alignSelf: "center", marginTop: 32 }}
+          onPress={() => this.props.navigation.navigate("Cadastro")}
         >
           <Text style={{ color: "#414959", fontSize: 13 }}>
             Novo no aplicativo? <Text style={{ fontWeight: "500", color: "#7878F5" }}>Cadastrar-se</Text>
@@ -83,7 +123,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   greeting: {
-    marginTop: 32,
+    marginTop: -32,
     fontSize: 18,
     fontWeight: "400",
     textAlign: "center",
