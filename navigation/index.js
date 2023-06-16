@@ -3,14 +3,14 @@ import { createSwitchNavigator } from "@react-navigation/compat";
 import { NavigationContainer } from "@react-navigation/native";
 import TabNavigator from "./TabNavigator";
 import DrawerNavigator from "./DrawerNavigator";
-import StackNavigator from "./StackNavigator";
+import AuthStackNavigator from "./AuthStackNavigator";
 import LoadingScreen from "../screens/LoadingScreen";
 
 const SwitchNavigator = createSwitchNavigator(
   {
     Loading: LoadingScreen,
     App: DrawerNavigator,
-    Auth: StackNavigator,
+    Auth: AuthStackNavigator,
   },
   {
     initialRouteName: "Loading",

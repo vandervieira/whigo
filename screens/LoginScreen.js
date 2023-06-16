@@ -65,14 +65,12 @@ export default class LoginScreen extends React.Component {
         <Image
           source={require("../assets/loginLogo.png")}
           style={{
-            marginTop: -100,
+            marginTop: -40,
             alignSelf: "center",
             width: 200,
             height: 200,
           }}
         ></Image>
-
-        <Text style={styles.greeting}>{`Bem-vindo\nao Whigo!`}</Text>
 
         <View style={styles.errorMessage}>
           {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
@@ -120,11 +118,11 @@ export default class LoginScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: "#2C2C2E",
+    backgroundColor: "#2C2C2E",
     flex: 1,
   },
   greeting: {
-    color: "#8A8F9E",
+    color: "#fff",
     marginTop: -32,
     fontSize: 18,
     fontWeight: "400",
@@ -141,9 +139,11 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "600",
     textAlign: "center",
+    marginBottom: 60,
   },
   form: {
-    marginBottom: 48,
+    marginTop: -40,
+    marginBottom: 10,
     marginHorizontal: 30,
   },
   inputTitle: {
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     height: 40,
     fontSize: 15,
-    color: "#1C1C1E",
+    color: "#fff",
   },
   button: {
     marginHorizontal: 30,

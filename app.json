@@ -5,6 +5,7 @@
         "NSLocationAlwaysAndWhenInUseUsageDescription": "Whigo requer geolocalização para melhorar a qualidade do serviço",
         "NSLocationAlwaysUsageDescription": "Whigo requer geolocalização para melhorar a qualidade do serviço",
         "NSLocationWhenInUseUsageDescription": "Whigo requer geolocalização para melhorar a qualidade do serviço",
+        "NSPhotoLibraryUsageDescription": "Precisamos dessa permissao para acessar a camera.",
         "UIBackgroundModes": [
           "location",
           "fetch"

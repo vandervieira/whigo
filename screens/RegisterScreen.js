@@ -2,39 +2,38 @@ import React from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, StatusBar } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import auth from "@react-native-firebase/auth";
+import Fire from "../Fire";
+import * as ImagePicker from "expo-image-picker";
+import storage from "@react-native-firebase/storage";
 
 export default class RegisterScreen extends React.Component {
   static navigationOptions = {
     headerShown: null,
   };
   state = {
-    email: "",
-    password: "",
+    user: {
+      name: "",
+      email: "",
+      password: "",
+      avatar: null,
+    },
     errorMessage: null,
   };
 
+  handlePickAvatar = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    if (!result.canceled) {
+      this.setState({ user: { ...this.state.user, avatar: result.assets[0].uri } });
+    }
+  };
+
   handleSignUp = () => {
-    auth()
-      .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then((userCredentials) => {
-        return userCredentials.user.updateProfile({
-          displayName: this.state.name,
-        });
-      })
-      // .catch((error) => this.setState({ errorMessage: error.message }));
-      .catch((error) => {
-        if (error.code === "auth/email-already-in-use") {
-          this.setState({ errorMessage: "Este email já está em uso." });
-        } else if (error.code === "auth/invalid-email") {
-          this.setState({ errorMessage: "Email inválido." });
-        } else if (error.code === "auth/weak-password") {
-          this.setState({ errorMessage: "Senha muito fraca." });
-        } else if (error.code === "auth/wrong-password") {
-          this.setState({ errorMessage: "Senha incorreta." });
-        } else {
-          this.setState({ errorMessage: error.code });
-        }
-      });
+    Fire.shared.createUser(this.state.user);
   };
 
   render() {
@@ -69,7 +68,8 @@ export default class RegisterScreen extends React.Component {
 
         <View style={{ position: "absolute", top: 64, alignItems: "center", width: "100%" }}>
           <Text style={styles.greeting}>{`Olá!\nCadastre-se para começar.`}</Text>
-          <TouchableOpacity style={styles.avatar}>
+          <TouchableOpacity style={styles.avatarPlaceHolder} onPress={this.handlePickAvatar}>
+            <Image source={{ uri: this.state.user.avatar }} style={styles.avatar} />
             <Ionicons name="ios-add" size={40} color="#FFF" style={{ marginTop: 0, marginLeft: 2 }}></Ionicons>
           </TouchableOpacity>
         </View>
@@ -84,8 +84,8 @@ export default class RegisterScreen extends React.Component {
             <TextInput
               style={styles.input}
               autoCapitalize="none"
-              onChangeText={(name) => this.setState({ name })}
-              value={this.state.name}
+              onChangeText={(name) => this.setState({ user: { ...this.state.user, name } })}
+              value={this.state.user.name}
               required
             ></TextInput>
           </View>
@@ -95,8 +95,8 @@ export default class RegisterScreen extends React.Component {
             <TextInput
               style={styles.input}
               autoCapitalize="none"
-              onChangeText={(email) => this.setState({ email })}
-              value={this.state.email}
+              onChangeText={(email) => this.setState({ user: { ...this.state.user, email } })}
+              value={this.state.user.email}
             ></TextInput>
           </View>
 
@@ -106,8 +106,8 @@ export default class RegisterScreen extends React.Component {
               style={styles.input}
               secureTextEntry
               autoCapitalize="none"
-              onChangeText={(password) => this.setState({ password })}
-              value={this.state.password}
+              onChangeText={(password) => this.setState({ user: { ...this.state.user, password } })}
+              value={this.state.user.password}
             ></TextInput>
           </View>
         </View>
@@ -120,7 +120,7 @@ export default class RegisterScreen extends React.Component {
           style={{ alignSelf: "center", marginTop: 32 }}
           onPress={() => this.props.navigation.navigate("Entrar")}
         >
-          <Text style={{ color: "#414959", fontSize: 13 }}>
+          <Text style={{ color: "#8A8F9E", fontSize: 13 }}>
             Ja tem uma conta? <Text style={{ fontWeight: "500", color: "#7878F5" }}>Entrar</Text>
           </Text>
         </TouchableOpacity>
@@ -131,6 +131,7 @@ export default class RegisterScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "#2C2C2E",
     flex: 1,
   },
   greeting: {
@@ -154,7 +155,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   form: {
-    marginTop: 40,
+    marginTop: 0,
     marginBottom: 40,
     marginHorizontal: 30,
   },
@@ -168,7 +169,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     height: 40,
     fontSize: 15,
-    color: "#161F3D",
+    color: "#fff",
   },
   button: {
     marginHorizontal: 30,
@@ -180,22 +181,28 @@ const styles = StyleSheet.create({
   },
   back: {
     position: "absolute",
-    top: 48,
-    left: 32,
-    width: 32,
-    height: 32,
+    top: 60,
+    left: 20,
+    width: 40,
+    height: 40,
     borderRadius: 16,
     backgroundColor: "rgba(21, 22, 48, 0.1)",
     alignItems: "center",
     justifyContent: "center",
   },
-  avatar: {
+  avatarPlaceHolder: {
     width: 100,
     height: 100,
+    backgroundColor: "#8A8F9E",
     borderRadius: 50,
-    backgroundColor: "#E1E2E6",
     marginTop: 60,
     justifyContent: "center",
     alignItems: "center",
+  },
+  avatar: {
+    position: "absolute",
+    width: 100,
+    height: 100,
+    borderRadius: 50,
   },
 });

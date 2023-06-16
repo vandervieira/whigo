@@ -2,10 +2,11 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 export default class FeedScreen extends React.Component {
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={{color: "white"}}>Mensagens</Text>
+        <Text style={{ color: "white", fontSize: 30 }}>FEED</Text>
       </View>
     );
   }
