@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import MapScreen from "../screens/MapScreen";
 import FeedScreen from "../screens/FeedScreen";
-import EventsScreen from "../screens/EventsScreen";
+import SearchEventsScreen from "../screens/SearchEventsScreen";
 
 const Tab = createBottomTabNavigator();
 const TabNavigator = () => (
@@ -66,7 +66,7 @@ const TabNavigator = () => (
     />
     <Tab.Screen
       name="Eventos"
-      component={EventsScreen}
+      component={SearchEventsScreen}
       options={{
         tabBarLabel: "Eventos",
         tabBarIcon: ({ color }) => <Ionicons name="search" color={color} size={35} style={{ marginBottom: -20 }} />,

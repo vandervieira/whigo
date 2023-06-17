@@ -26,7 +26,17 @@ class Fire {
     await auth()
       .createUserWithEmailAndPassword(user.email, user.password)
       .catch((error) => {
-        alert(error);
+        if (error.code === "auth/email-already-in-use") {
+          this.setState({ errorMessage: "Este email já está em uso." });
+        } else if (error.code === "auth/invalid-email") {
+          this.setState({ errorMessage: "Email inválido." });
+        } else if (error.code === "auth/weak-password") {
+          this.setState({ errorMessage: "Senha muito fraca." });
+        } else if (error.code === "auth/wrong-password") {
+          this.setState({ errorMessage: "Senha incorreta." });
+        } else {
+          this.setState({ errorMessage: error.code });
+        }
       });
 
     let db = this.firestore.collection("users").doc(this.uid);

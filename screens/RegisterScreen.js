@@ -1,10 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, StatusBar } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import auth from "@react-native-firebase/auth";
 import Fire from "../Fire";
 import * as ImagePicker from "expo-image-picker";
-import storage from "@react-native-firebase/storage";
 
 export default class RegisterScreen extends React.Component {
   static navigationOptions = {
@@ -61,7 +59,6 @@ export default class RegisterScreen extends React.Component {
             right: -40,
           }}
         ></Image>
-
         <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.goBack()}>
           <Ionicons name="ios-arrow-back-outline" size={24} color="#FFF"></Ionicons>
         </TouchableOpacity>

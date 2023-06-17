@@ -88,7 +88,7 @@ const MapRealTime = () => {
                     latitude: location.coords.latitude,
                     longitude: location.coords.longitude,
                  },
-                zoom: 16
+                zoom: 16,
             }}
             minZoomLevel={12}
             onPress={ (e) => newMarker(e) }
