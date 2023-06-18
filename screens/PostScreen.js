@@ -8,7 +8,15 @@ export default class PostScreen extends React.Component {
   state = {
     text: "",
     image: null,
+    userAvatar: null,
   };
+
+  componentDidMount() {
+    userAvatar = Fire.shared.firestore.collection("users").doc(Fire.shared.uid).get().then((doc) => {
+        this.setState({ userAvatar: doc.data().avatar });
+        }
+    );
+  }
 
   handlePickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -34,45 +42,48 @@ export default class PostScreen extends React.Component {
   };
   render() {
     return (
-        <SafeAreaView
-          edges={["left", "right", "bottom"]}
-          style={{
-            flex: 1,
-            backgroundColor: "#1C1C1E",
-            position: "relative",
-          }}
-        >
-          <View style={styles.header}>
-            <TouchableOpacity style={styles.addButton} onPress={this.handleGoBack}>
-              <Text style={styles.cancelButton}>Cancelar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.publishButton} onPress={this.handlePost}>
-              <Text style={styles.publishButtonText}>Publicar</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Image source={require("../assets/tempAvatar.jpg")} style={styles.avatar} />
-            <TextInput
-              autoFocus={true}
-              multiline={true}
-              numberOfLines={4}
-              style={styles.input}
-              placeholder="Como está o evento?"
-              placeholderTextColor="#787880"
-              onChangeText={(text) => this.setState({ text })}
-              value={this.state.text}
-            ></TextInput>
-          </View>
-
-          <TouchableOpacity style={styles.photo} onPress={this.handlePickImage}>
-            <Ionicons name="md-camera" size={32} color="#9D9D9D" />
+      <SafeAreaView
+        edges={["left", "right", "bottom"]}
+        style={{
+          flex: 1,
+          backgroundColor: "#1C1C1E",
+          position: "relative",
+        }}
+      >
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.addButton} onPress={this.handleGoBack}>
+            <Text style={styles.cancelButton}>Cancelar</Text>
           </TouchableOpacity>
+          <TouchableOpacity style={styles.publishButton} onPress={this.handlePost}>
+            <Text style={styles.publishButtonText}>Publicar</Text>
+          </TouchableOpacity>
+        </View>
 
-          <View style={{ marginHorizontal: 32, marginTop: 32, height: 150 }}>
-            <Image source={{ uri: this.state.image }} style={{ width: "100%", height: "100%" }}></Image>
-          </View>
-        </SafeAreaView>
+        <View style={styles.inputContainer}>
+          <Image
+            source={this.state.userAvatar ? { uri: this.state.userAvatar } : require("../assets/tempAvatar.jpg")}
+            style={styles.avatar}
+          />
+          <TextInput
+            autoFocus={true}
+            multiline={true}
+            numberOfLines={4}
+            style={styles.input}
+            placeholder="Como está o evento?"
+            placeholderTextColor="#787880"
+            onChangeText={(text) => this.setState({ text })}
+            value={this.state.text}
+          ></TextInput>
+        </View>
+
+        <TouchableOpacity style={styles.photo} onPress={this.handlePickImage}>
+          <Ionicons name="md-camera" size={32} color="#9D9D9D" />
+        </TouchableOpacity>
+
+        <View style={{ marginHorizontal: 32, marginTop: 32, height: 150 }}>
+          <Image source={{ uri: this.state.image }} style={{ width: "100%", height: "100%" }}></Image>
+        </View>
+      </SafeAreaView>
     );
   }
 }
@@ -109,9 +120,13 @@ const styles = StyleSheet.create({
     color: "white",
   },
   inputContainer: {
-    margin: 32,
+    margin: 15,
     flexDirection: "row",
-    backgroundColor: "#1C1C1E"
+    backgroundColor: "#1C1C1E",
+  },
+  input: {
+    color: "#fff",
+    flex: 1,
   },
   avatar: {
     width: 48,

@@ -29,7 +29,7 @@ class FeedScreen extends React.Component {
         </TouchableOpacity>
 
         <Modal visible={modalVisible} animationType="slide">
-        <PostScreen onClose={this.handleClosePostModal} />
+          <PostScreen onClose={this.handleClosePostModal} />
         </Modal>
       </View>
     );

@@ -4,21 +4,51 @@ import { Ionicons } from "@expo/vector-icons";
 
 // Dados de exemplo
 const eventosProximos = [
-  { id: 1, titulo: "Evento 1", data: "Hoje", imagem: require("../assets/mocks/event1.png") },
-  { id: 2, titulo: "Evento 2", data: "02 Jun", imagem: require("../assets/mocks/event2.png") },
-  { id: 3, titulo: "Evento 3", data: "03 Jul", imagem: require("../assets/mocks/event3.png") },
+  {
+    id: 1,
+    titulo: "Gusttavo Lima em Porto Alegre! Não perca esse evento que vai lotar a grande capital!",
+    data: "Hoje",
+    imagem: require("../assets/mocks/event1.png"),
+  },
+  {
+    id: 2,
+    titulo: "Virada Mágina praia do Rosa, maior virada do litoral caterinense!",
+    data: "02 Jun",
+    imagem: require("../assets/mocks/event2.png"),
+  },
+  {
+    id: 3,
+    titulo: "Tardezinha em Porto Alegre chegou!",
+    data: "03 Jul",
+    imagem: require("../assets/mocks/event3.png"),
+  },
 ];
 
 const eventosPopulares = [
-  { id: 4, titulo: "Evento 4", data: "12 Ago", imagem: require("../assets/mocks/event4.png") },
-  { id: 5, titulo: "Evento 5", data: "03 Nov", imagem: require("../assets/mocks/event5.png") },
-  { id: 6, titulo: "Evento 6", data: "30 Nov", imagem: require("../assets/mocks/event6.png") },
+  {
+    id: 4,
+    titulo: "Tardezinha em Porto Alegre chegou!",
+    data: "12 Ago",
+    imagem: require("../assets/mocks/event4.png"),
+  },
+  {
+    id: 5,
+    titulo: "Virada Mágina praia do Rosa, maior virada do litoral caterinense!",
+    data: "03 Nov",
+    imagem: require("../assets/mocks/event5.png"),
+  },
+  {
+    id: 6,
+    titulo: "Gusttavo Lima em Porto Alegre! Não perca esse evento que vai lotar a grande capital!",
+    data: "30 Nov",
+    imagem: require("../assets/mocks/event6.png"),
+  },
 ];
 
 const Evento = ({ titulo, data, imagem }) => (
   <View style={styles.eventoContainer}>
     <Image source={imagem} style={styles.imagemEvento} />
-    <Text style={styles.tituloEvento}>{titulo}</Text>
+    <Text style={styles.tituloEvento}>{titulo.length > 40 ? titulo.slice(0, 45) + "..." : titulo}</Text>
     <Text style={styles.dataEvento(data)}>{data}</Text>
   </View>
 );
@@ -81,8 +111,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   areaEventos: {
-    marginTop: 10,
-    marginBottom: 20,
+    marginTop: 5,
+    marginBottom: 0,
     marginLeft: 10,
   },
   areaTitulo: {
@@ -95,6 +125,7 @@ const styles = StyleSheet.create({
   eventoContainer: {
     width: 200,
     marginRight: 10,
+    marginBottom: 10,
   },
   imagemEvento: {
     width: "100%",
@@ -107,8 +138,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     color: "#ccc",
   },
-  dataEvento:(data) => ( {
-    fontSize: 14,
+  dataEvento: (data) => ({
+    marginTop: 3,
+    fontSize: 15,
     color: data === "Hoje" ? "red" : "#ccc",
   }),
 });

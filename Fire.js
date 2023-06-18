@@ -94,6 +94,10 @@ class Fire {
     return auth().currentUser.displayName;
   }
 
+  get userAvatar() {
+    return auth().currentUser.photoURL;
+  }
+
   get userEmail() {
     return auth().currentUser.email;
   }
