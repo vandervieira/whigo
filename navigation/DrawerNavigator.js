@@ -11,7 +11,7 @@ const DrawerNavigator = () => (
   <Drawer.Navigator
     screenOptions={{
       headerTintColor: "#7878F5",
-      title: "",
+      title: '',
       headerStyle: {
         backgroundColor: "#1C1C1E",
       },
