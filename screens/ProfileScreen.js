@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Button, Image } from "react-native";
+import { View, Text, StyleSheet, Button, Image, LayoutAnimation } from "react-native";
 import Fire from "../Fire";
 
 export default class ProfileScreen extends React.Component {
@@ -25,6 +25,7 @@ export default class ProfileScreen extends React.Component {
   }
 
   render() {
+    LayoutAnimation.easeInEaseOut();
     return (
       <View style={styles.container}>
         <View style={{ marginTop: 64, alignItems: "center" }}>

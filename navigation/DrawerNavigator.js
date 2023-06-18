@@ -44,7 +44,7 @@ const DrawerNavigator = () => (
          </TouchableOpacity>
       ),
       drawerIcon: ({ focused, size }) => <Ionicons name="home" color={focused ? "#7878F5" : "#666666"} size={size} />,
-      drawerLabel: ({ focused }) => <Text style={{ color: focused ? "#7878F5" : "#666666" }}>Home</Text>,
+      drawerLabel: ({ focused }) => <Text style={{ color: focused ? "#7878F5" : "#666666" }}>Inicio</Text>,
     })}/>
   </Drawer.Navigator>
 );

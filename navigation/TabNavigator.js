@@ -24,54 +24,54 @@ const TabNavigator = () => (
       },
     }}
   >
-    <Tab.Screen
-      name="Feed"
-      component={FeedScreen}
-      options={{
-        tabBarLabel: "Feed",
-        tabBarIcon: ({ color }) => <Ionicons name="layers" color={color} size={35} style={{ marginBottom: -20 }} />,
-        tabBarBadge: 3,
-      }}
-    />
-    <Tab.Screen
-      name="WHIGO"
-      component={MapScreen}
-      options={{
-        tabBarLabel: "WHIGO",
-        tabBarIcon: ({ color }) => (
-          <View
-            style={{
-              backgroundColor: "#1C1C1E",
-              borderRadius: 50,
-              width: 90,
-              height: 90,
-              borderWidth: 2,
-              borderColor: "#666666",
-              marginBottom: 10,
-            }}
-            pointerEvents={"box-none"}
-          >
-            <Ionicons
-              name="location-sharp"
-              color={color}
-              size={60}
+      <Tab.Screen
+        name="Feed"
+        component={FeedScreen}
+        options={{
+          tabBarLabel: "Feed",
+          tabBarIcon: ({ color }) => <Ionicons name="layers" color={color} size={35} style={{ marginBottom: -20 }} />,
+          tabBarBadge: 3,
+        }}
+      />
+      <Tab.Screen
+        name="WHIGO"
+        component={MapScreen}
+        options={{
+          tabBarLabel: "WHIGO",
+          tabBarIcon: ({ color }) => (
+            <View
               style={{
-                paddingLeft: 12,
-                marginTop: 10,
+                backgroundColor: "#1C1C1E",
+                borderRadius: 50,
+                width: 90,
+                height: 90,
+                borderWidth: 2,
+                borderColor: "#666666",
+                marginBottom: 10,
               }}
-            />
-          </View>
-        ),
-      }}
-    />
-    <Tab.Screen
-      name="Eventos"
-      component={SearchEventsScreen}
-      options={{
-        tabBarLabel: "Eventos",
-        tabBarIcon: ({ color }) => <Ionicons name="search" color={color} size={35} style={{ marginBottom: -20 }} />,
-      }}
-    />
+              pointerEvents={"box-none"}
+            >
+              <Ionicons
+                name="location-sharp"
+                color={color}
+                size={60}
+                style={{
+                  paddingLeft: 12,
+                  marginTop: 10,
+                }}
+              />
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Eventos"
+        component={SearchEventsScreen}
+        options={{
+          tabBarLabel: "Eventos",
+          tabBarIcon: ({ color }) => <Ionicons name="search" color={color} size={35} style={{ marginBottom: -20 }} />,
+        }}
+      />
   </Tab.Navigator>
 );
 

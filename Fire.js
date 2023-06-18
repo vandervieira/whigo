@@ -3,6 +3,30 @@ import auth from "@react-native-firebase/auth";
 import storage from "@react-native-firebase/storage";
 
 class Fire {
+  addPost = async ({ text, localUri }) => {
+    const remoteUri = null;
+    if(localUri) {
+    const remoteUri = await this.uploadPhotoAsync(localUri, `postImages/${this.uid}/${Date.now()}`);
+    }
+
+    return new Promise((res, rej) => {
+      this.firestore
+        .collection("posts")
+        .add({
+          text,
+          uid: this.uid,
+          timestamp: this.timestamp,
+          image: remoteUri ? remoteUri : null,
+        })
+        .then((ref) => {
+          res(ref);
+        })
+        .catch((error) => {
+          rej(error);
+        });
+    });
+  };
+
   uploadPhotoAsync = async (uri, filename) => {
     return new Promise(async (res, rej) => {
       let upload = storage().ref(filename).putFile(uri);
