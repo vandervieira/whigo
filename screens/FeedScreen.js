@@ -2,88 +2,83 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Modal, FlatList, Image } from "react-native";
 import { withNavigation } from "react-navigation";
 import { Ionicons } from "@expo/vector-icons";
+import firestore from "@react-native-firebase/firestore";
 import PostScreen from "./PostScreen";
 import moment from "moment";
 import "moment/locale/pt-br";
 
-//Posts mockados temporariamente
-posts = [
-  {
-    id: "1",
-    name: "Joe McKay",
-    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mattis pretium massa. Aliquam erat volutpat.",
-    timestamp: 1687124122016,
-    avatar: require("../assets/tempAvatar.jpg"),
-    image: require("../assets/tempImage1.jpg"),
-  },
-  {
-    id: "2",
-    name: "Lucy Smith",
-    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mattis pretium massa. Aliquam erat volutpat.",
-    timestamp: 1569109273726,
-    avatar: require("../assets/tempAvatar.jpg"),
-    image: require("../assets/tempImage2.jpg"),
-  },
-  {
-    id: "3",
-    name: "Jackson White",
-    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mattis pretium massa. Aliquam erat volutpat.",
-    timestamp: 1569109273726,
-    avatar: require("../assets/tempAvatar.jpg"),
-    image: require("../assets/tempImage3.jpg"),
-  },
-  {
-    id: "4",
-    name: "Maria Rodriguez",
-    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mattis pretium massa. Aliquam erat volutpat.",
-    timestamp: 1569109273726,
-    avatar: require("../assets/tempAvatar.jpg"),
-    image: require("../assets/tempImage4.jpg"),
-  },
-  {
-    id: "5",
-    name: "Ricardo Oliveira",
-    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mattis pretium massa. Aliquam erat volutpat.",
-    timestamp: 1569109273726,
-    avatar: require("../assets/tempAvatar.jpg"),
-    image: require("../assets/tempImage5.jpg"),
-  },
-];
-
 class FeedScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      posts: [],
+      modalVisible: false,
+      hasNewPosts: false, // Estado para controlar a presença de novos posts
+    };
+  }
 
-  renderPost = (post) => {
-    return (
-      moment.locale("pt-br"),
-      (
-        <View style={styles.feedItem}>
-          <Image source={post.avatar} style={styles.avatar} />
-          <View style={{ flex: 1 }}>
-            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-              <View>
-                <Text style={styles.name}>{post.name}</Text>
-                <Text style={styles.timestamp}>{moment(post.timestamp).fromNow()}</Text>
-              </View>
+  componentDidMount() {
+    this.fetchPosts(); // Inicialmente, busca os posts existentes
+    this.subscribeToNewPosts(); // Monitora novos posts
+  }
 
-              <Ionicons name="ios-ellipsis-horizontal-sharp" size={24} color="#73788B" />
-            </View>
+  fetchPosts = () => {
+    // Recupera os posts da coleção "posts" e os ordena pelo timestamp
+    firestore()
+      .collection("posts")
+      .orderBy("timestamp", "desc") // Ordena pelo campo "timestamp" em ordem decrescente
+      .get()
+      .then((querySnapshot) => {
+        const posts = [];
+        querySnapshot.forEach((doc) => {
+          const post = doc.data();
 
-            <Text style={styles.post}>{post.text}</Text>
+          // Recupera o UID do usuário do post
+          const uid = post.uid;
 
-            <Image source={post.image} style={styles.postImage} resizeMode="cover" />
+          // Recupera os dados do usuário correspondente usando o UID como ID do documento
+          firestore()
+            .collection("users")
+            .doc(uid)
+            .get()
+            .then((userDoc) => {
+              const user = userDoc.data();
 
-            <View style={{ flexDirection: "row" }}>
-              <Ionicons name="ios-heart-outline" size={24} color="#73788B" style={{ marginRight: 16 }} />
-              <Ionicons name="ios-chatbox-ellipses-outline" size={24} color="#73788B" style={{ marginRight: 16 }} />
-            </View>
-          </View>
-        </View>
-      )
-    );
+              // Adiciona os dados do usuário ao objeto de post
+              post.id = doc.id;
+              post.name = user.name;
+              post.avatar = user.avatar;
+
+              // Adiciona o post ao array de posts
+              posts.push(post);
+
+              // Verifica se todos os posts foram adicionados antes de atualizar o estado
+              if (posts.length === querySnapshot.size) {
+                // Ordena os posts pelo timestamp
+                posts.sort((a, b) => b.timestamp - a.timestamp);
+
+                // Atualiza o estado com os posts populados e ordenados
+                this.setState({ posts });
+              }
+            });
+        });
+      })
+      .catch((error) => {
+        console.log("Error fetching posts: ", error);
+      });
   };
 
-  state = {
-    modalVisible: false,
+  subscribeToNewPosts = () => {
+    firestore()
+      .collection("posts")
+      .orderBy("timestamp", "desc")
+      .limit(1)
+      .onSnapshot((querySnapshot) => {
+        // Verifica se há alguma alteração na coleção
+        if (querySnapshot.docChanges().length > 0) {
+          this.setState({ hasNewPosts: true }); // Atualiza o estado para indicar a presença de novos posts
+        }
+      });
   };
 
   handleOpenPostModal = () => {
@@ -94,8 +89,43 @@ class FeedScreen extends React.Component {
     this.setState({ modalVisible: false });
   };
 
+  handleNewPosts = () => {
+    this.setState({ hasNewPosts: false }); // Reseta o estado de novos posts ao clicar no botão
+    this.fetchPosts(); // Busca novamente os posts para atualizar o feed
+  };
+
+  renderPost = (post) => {
+    moment.locale("pt-br");
+
+    let postImage = null;
+    if (post.image !== null) {
+      postImage = <Image source={{ uri: post.image }} style={styles.postImage} resizeMode="cover" />;
+    }
+
+    return (
+      <View style={styles.feedItem}>
+        <Image source={{ uri: post.avatar }} style={styles.avatar} />
+        <View style={{ flex: 1 }}>
+          <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+            <View>
+              <Text style={styles.name}>{post.name}</Text>
+              <Text style={styles.timestamp}>{moment(post.timestamp).fromNow()}</Text>
+            </View>
+            <Ionicons name="ios-ellipsis-horizontal-sharp" size={24} color="#73788B" />
+          </View>
+          <Text style={styles.post}>{post.text}</Text>
+          {postImage}
+          <View style={{ flexDirection: "row" }}>
+            <Ionicons name="ios-heart-outline" size={24} color="#73788B" style={{ marginRight: 16 }} />
+            <Ionicons name="ios-chatbox-ellipses-outline" size={24} color="#73788B" style={{ marginRight: 16 }} />
+          </View>
+        </View>
+      </View>
+    );
+  };
+
   render() {
-    const { modalVisible } = this.state;
+    const { posts, modalVisible, hasNewPosts } = this.state;
 
     return (
       <View style={styles.container}>
@@ -113,6 +143,11 @@ class FeedScreen extends React.Component {
         <Modal visible={modalVisible} animationType="slide">
           <PostScreen onClose={this.handleClosePostModal} />
         </Modal>
+        {hasNewPosts && (
+          <TouchableOpacity style={styles.newPostsButton} onPress={this.handleNewPosts}>
+            <Text style={styles.newPostsButtonText}>Novos posts</Text>
+          </TouchableOpacity>
+        )}
       </View>
     );
   }
@@ -166,6 +201,7 @@ const styles = StyleSheet.create({
   },
   post: {
     marginTop: 16,
+    marginBottom: 16,
     fontSize: 14,
     color: "#fff",
   },
@@ -173,6 +209,21 @@ const styles = StyleSheet.create({
     width: undefined,
     height: 150,
     borderRadius: 5,
-    marginVertical: 16,
+    marginBottom: 16,
+  },
+  newPostsButton: {
+    position: "absolute",
+    top: 20,
+    zIndex: 1,
+    backgroundColor: "#7878F5",
+    borderRadius: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignSelf: "center",
+  },
+  newPostsButtonText: {
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });

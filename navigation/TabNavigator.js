@@ -30,7 +30,7 @@ const TabNavigator = () => (
         options={{
           tabBarLabel: "Feed",
           tabBarIcon: ({ color }) => <Ionicons name="layers" color={color} size={35} style={{ marginBottom: -20 }} />,
-          tabBarBadge: 3,
+          tabBarBadge: 2,
         }}
       />
       <Tab.Screen
@@ -47,7 +47,7 @@ const TabNavigator = () => (
                 height: 90,
                 borderWidth: 2,
                 borderColor: "#666666",
-                marginBottom: 10,
+                marginBottom: 20,
               }}
               pointerEvents={"box-none"}
             >

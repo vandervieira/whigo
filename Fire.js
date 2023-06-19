@@ -4,9 +4,9 @@ import storage from "@react-native-firebase/storage";
 
 class Fire {
   addPost = async ({ text, localUri }) => {
-    const remoteUri = null;
-    if(localUri) {
-    const remoteUri = await this.uploadPhotoAsync(localUri, `postImages/${this.uid}/${Date.now()}`);
+    let remoteUri = null;
+    if (localUri) {
+      remoteUri = await this.uploadPhotoAsync(localUri, `postImages/${this.uid}/${Date.now()}`);
     }
 
     return new Promise((res, rej) => {

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Button, Image, LayoutAnimation } from "react-native";
+import { View, Text, StyleSheet, Button, Image, LayoutAnimation, TouchableOpacity } from "react-native";
 import Fire from "../Fire";
 
 export default class ProfileScreen extends React.Component {
@@ -51,7 +51,14 @@ export default class ProfileScreen extends React.Component {
             <Text style={styles.statTitle}>Posts</Text>
           </View>
         </View>
-        <Button onPress={() => {Fire.shared.signOut()}} title="Sair" />
+        <TouchableOpacity
+          style={styles.logoutButton}
+          onPress={() => {
+            Fire.shared.signOut();
+          }}
+        >
+          <Text style={styles.logoutButtonText}>Sair</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -97,5 +104,16 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     marginTop: 4,
   },
-  
+  logoutButton: {
+    backgroundColor: "#7878F5",
+    borderRadius: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignSelf: "center",
+  },
+  logoutButtonText: {
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 });
