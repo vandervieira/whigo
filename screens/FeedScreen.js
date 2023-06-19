@@ -19,7 +19,6 @@ class FeedScreen extends React.Component {
 
   componentDidMount() {
     this.fetchPosts(); // Inicialmente, busca os posts existentes
-    this.subscribeToNewPosts(); // Monitora novos posts
   }
 
   fetchPosts = () => {
@@ -59,6 +58,9 @@ class FeedScreen extends React.Component {
 
                 // Atualiza o estado com os posts populados e ordenados
                 this.setState({ posts });
+
+                // Verifica se há novos posts após a busca inicial
+                this.subscribeToNewPosts();
               }
             });
         });
@@ -75,7 +77,7 @@ class FeedScreen extends React.Component {
       .limit(1)
       .onSnapshot((querySnapshot) => {
         // Verifica se há alguma alteração na coleção
-        if (querySnapshot.docChanges().length > 0) {
+        if (querySnapshot.docChanges().length > 1) {
           this.setState({ hasNewPosts: true }); // Atualiza o estado para indicar a presença de novos posts
         }
       });
