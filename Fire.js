@@ -3,6 +3,44 @@ import auth from "@react-native-firebase/auth";
 import storage from "@react-native-firebase/storage";
 
 class Fire {
+  addEvent = async ({ localUri, name, category, visibility, startDateTime, endDateTime, cep, city, stateAddress, neighborhood, address, addressNumber, fullAddress, latitude, longitude, description }) => {
+    let remoteUri = null;
+    if (localUri) {
+      remoteUri = await this.uploadPhotoAsync(localUri, `eventImages/${this.uid}/${Date.now()}`);
+    }
+
+    return new Promise((res, rej) => {
+      this.firestore
+        .collection("events")
+        .add({
+          uid: this.uid,
+          timestamp: this.timestamp,
+          image: remoteUri ? remoteUri : null,
+          name,
+          category,
+          visibility,
+          startDateTime,
+          endDateTime,
+          cep,
+          city,
+          stateAddress,
+          neighborhood,
+          address,
+          addressNumber,
+          fullAddress,
+          latitude,
+          longitude,
+          description,
+        })
+        .then((ref) => {
+          res(ref);
+        })
+        .catch((error) => {
+          rej(error);
+        });
+    });
+  };
+
   addPost = async ({ text, localUri }) => {
     let remoteUri = null;
     if (localUri) {
@@ -33,7 +71,7 @@ class Fire {
 
       upload.on(
         "state_changed",
-        (snapshot) => {},
+        (snapshot) => { },
         (err) => {
           rej(err);
         },

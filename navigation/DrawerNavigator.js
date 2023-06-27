@@ -1,9 +1,11 @@
 import React from "react";
-import { Text, Button, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { createDrawerNavigator, DrawerToggleButton } from "@react-navigation/drawer";
 import TabNavigator from "./TabNavigator";
 import ProfileStackNavigator from "./ProfileStackNavigator";
+import NewEventScreen from "../screens/NewEventScreen";
+import EventScreen from "../screens/EventScreen";
 
 const Drawer = createDrawerNavigator();
 
@@ -11,7 +13,7 @@ const DrawerNavigator = () => (
   <Drawer.Navigator
     screenOptions={{
       headerTintColor: "#7878F5",
-      title: '',
+      title: "",
       headerStyle: {
         backgroundColor: "#1C1C1E",
       },
@@ -25,27 +27,47 @@ const DrawerNavigator = () => (
       component={TabNavigator}
       options={({ navigation, route }) => ({
         headerRight: () => (
-          <TouchableOpacity 
-          onPress={() => navigation.navigate('Profile')}>
-            <Ionicons name="person" size={24} color="#7878F5" style={{ marginRight: 10 }}/>
+          <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+            <Ionicons name="person" size={24} color="#7878F5" style={{ marginRight: 10 }} />
           </TouchableOpacity>
-          
         ),
         drawerIcon: ({ focused, size }) => <Ionicons name="home" color={focused ? "#7878F5" : "#666666"} size={size} />,
-        drawerLabel: ({ focused }) => <Text style={{ color: focused ? "#7878F5" : "#666666" }}>Home</Text>,
+        drawerLabel: ({ focused }) => <Text style={{ color: focused ? "#7878F5" : "#666666" }}>Inicio</Text>,
       })}
     />
-    <Drawer.Screen name="Profile" component={ProfileStackNavigator} 
-    options={({ navigation, route }) => ({
-      drawerItemStyle: { height: 0 },
-      headerLeft: () => (
-         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="ios-arrow-back-outline" size={32} color="#7878F5" style={{ marginLeft: 5, marginBottom: 5}}/>
-         </TouchableOpacity>
-      ),
-      drawerIcon: ({ focused, size }) => <Ionicons name="home" color={focused ? "#7878F5" : "#666666"} size={size} />,
-      drawerLabel: ({ focused }) => <Text style={{ color: focused ? "#7878F5" : "#666666" }}>Inicio</Text>,
-    })}/>
+    <Drawer.Screen
+      name="Profile"
+      component={ProfileStackNavigator}
+      options={({ navigation }) => ({
+        drawerItemStyle: { height: 0 },
+        headerLeft: () => (
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Ionicons
+              name="ios-arrow-back-outline"
+              size={32}
+              color="#7878F5"
+              style={{ marginLeft: 5, marginBottom: 5 }}
+            />
+          </TouchableOpacity>
+        ),
+      })}
+    />
+    <Drawer.Screen
+      name="NewEvent"
+      component={NewEventScreen}
+      options={() => ({
+        drawerIcon: ({ focused, size }) => <Ionicons name="md-today" color={focused ? "#7878F5" : "#666666"} size={size} />,
+        drawerLabel: ({ focused }) => <Text style={{ color: focused ? "#7878F5" : "#666666" }}>Criar Evento</Text>,
+      })}
+    />
+    <Drawer.Screen
+      name="Event"
+      component={EventScreen}
+      options={() => ({
+        drawerIcon: ({ focused, size }) => <Ionicons name="browsers" color={focused ? "#7878F5" : "#666666"} size={size} />,
+        drawerLabel: ({ focused }) => <Text style={{ color: focused ? "#7878F5" : "#666666" }}>Evento</Text>,
+      })}
+    />
   </Drawer.Navigator>
 );
 
