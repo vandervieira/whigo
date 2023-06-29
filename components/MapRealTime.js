@@ -1,7 +1,8 @@
 // import firestore from "@react-native-firebase/firestore"
 import React, { useState, useEffect, useRef } from 'react';
 import { View, TouchableOpacity, StyleSheet, Text, Image } from 'react-native';
-import MapView, { Callout, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Callout, CalloutSubview, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { useNavigation } from '@react-navigation/native';
 import { defaultScreen } from '../styles/general';
 import { Ionicons } from "@expo/vector-icons";
 import { mapStyle, customMap } from '../styles/map';
@@ -15,16 +16,19 @@ import {
 } from 'expo-location';
 
 
-//Unisinos 
-//-29,795288
-//-51,154582
-
-
+const markerIconByCategorie = {
+    "Festa": "#FFC107",
+    "Show": "#2196F3",
+    "Aniversário": "#E91E63",
+    "Churrasco": "#FF5722",
+    "Palestra": "#4CAF50"
+};
 
 const MapRealTime = () => {
     const [location, setLocation] = useState(null);
     const mapRef = useRef(null);
     const [allEvents, setAllEvents] = useState([]);
+    const navigation = useNavigation();
 
 
     handleCenterCamera = () => {
@@ -33,6 +37,24 @@ const MapRealTime = () => {
             center: location.coords,
             zoom: 14.721086502075195
         })
+    };
+
+    handleCenterCameraToEvent = (eventID) => {
+        const event = allEvents.find(event => event.id === eventID);
+        latitudeAdjusted = event.latitude - 0.0008;
+        mapRef.current.animateCamera({
+            center: {
+                latitude: latitudeAdjusted,
+                longitude: event.longitude,
+            },
+            zoom: 18
+        })
+        console.log("Atual", event.latitude, " new ", latitudeAdjusted)
+        console.log(mapRef.current.getCamera().latitude)
+    };
+
+    handleNavigateToEventScreen = (eventID) => {
+        navigation.navigate('Event', { eventID: eventID });
     };
 
     useEffect(() => {
@@ -72,30 +94,10 @@ const MapRealTime = () => {
                 distanceInterval: 1
             }, (response) => {
                 setLocation(response);
+
             });
         })();
     }, []);
-
-    function showModal(e) {
-        // let dados = {
-        //     key: markers.length + 1,
-        //     coords: {
-        //         latitude: e.nativeEvent.coordinate.latitude,
-        //         longitude: e.nativeEvent.coordinate.longitude
-        //     },
-        //     pinColor: '#7878F5'
-        // }
-        // console.log(dados.coords, dados.key)
-        mapRef.current?.animateCamera({
-            center: {
-                latitude: e.nativeEvent.coordinate.latitude + 0.003,
-                longitude: e.nativeEvent.coordinate.longitude,
-            },
-            zoom: 16
-        })
-
-        // setMarkers(oldArray => [...oldArray, dados])
-    }
 
     return (
         <View style={defaultScreen.container}>
@@ -127,16 +129,18 @@ const MapRealTime = () => {
                     {
                         allEvents.map(event => {
                             return (<Marker
+                                title={event.id}
                                 key={event.id}
                                 coordinate={{
                                     latitude: event.latitude,
                                     longitude: event.longitude
                                 }}
-                                pinColor={'#7878F5'}
-                                // icon={require('../assets/mocks/event1.png')}
-                                onPress={(e) => showModal(e)}
+                                pinColor={markerIconByCategorie[event.category]}
+                            // icon={require('../assets/mocks/event1.png')}
+
                             >
-                                <Callout tooltip>
+                                <Callout tooltip
+                                >
                                     <View>
                                         <View style={styles.bubble}>
                                             <View style={styles.textView}>
@@ -146,9 +150,17 @@ const MapRealTime = () => {
                                                 />
                                                 <Text style={styles.title}>{event.name}</Text>
                                                 <View style={{ flexDirection: "row" }}>
-                                                    <Text style={styles.datatime}>📅 {event.startDateTime}</Text>
-                                                    <Text style={styles.confirmed}>✅ 212</Text>
-                                                    <Text style={styles.interested}>👀 423</Text>
+                                                    <Text style={styles.datatime}><Ionicons name="ios-calendar-outline" size={15} color="#7878F5" /> {event.startDateTime}</Text>
+                                                    <Text style={styles.confirmed}><Ionicons name="people-sharp" size={15} color="#00a000" /> {event.peopleGoing}</Text>
+                                                    <Text style={styles.interested}><Ionicons name="people-sharp" size={15} color="#bfbfbf" /> {event.peopleInterested}</Text>
+                                                </View>
+                                                <View style={{ flexDirection: "row" }}>
+                                                    <CalloutSubview style={styles.seeMoreButton} onPress={() => handleNavigateToEventScreen(event.id)}>
+                                                        <Text style={styles.seeMore}>Ver mais</Text>
+                                                    </CalloutSubview>
+                                                    {/* <CalloutSubview style={styles.goLocationButton} onPress={() => handleCenterCameraToEvent(event.id)}>
+                                                        <Ionicons name="md-navigate-circle-outline" size={10} color="#7878F5" />
+                                                    </CalloutSubview> */}
                                                 </View>
                                             </View>
                                         </View>
@@ -161,7 +173,7 @@ const MapRealTime = () => {
                     }
 
                     <TouchableOpacity style={styles.centralizeCameraButton} onPress={handleCenterCamera}>
-                        <Ionicons name="ios-scan-circle-outline" size={40} color="#7878F5" />
+                        <Ionicons name="md-navigate-circle-outline" size={40} color="#7878F5" />
                     </TouchableOpacity>
                 </MapView>
             }
@@ -186,7 +198,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: '#141414',
         borderRadius: 6,
-        padding: 8,
+        padding: 8
     },
     arrow: {
         backgroundColor: 'transparent',
@@ -211,7 +223,7 @@ const styles = StyleSheet.create({
     image: {
         resizeMode: 'cover',
         width: '100%',
-        height: 200,
+        height: 160, //160 because another higher value the app crashes 
     },
     title: {
         color: '#fff',
@@ -246,5 +258,27 @@ const styles = StyleSheet.create({
         fontSize: 12,
         textAlign: 'center',
         marginBottom: 10
-    }
+    },
+    seeMoreButton: {
+        width: 90,
+        height: 30,
+        backgroundColor: '#7878F5',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+    seeMore: {
+        color: '#fff',
+        marginTop: 0,
+        fontSize: 12,
+        textAlign: 'right',
+    },
+    goLocationButton: {
+        width: 90,
+        height: 30,
+        backgroundColor: '#fff',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+        marginBottom: 10,
+    },
 });

@@ -42,6 +42,10 @@ const ProfileScreen = ({ uid }) => {
       </View>
       <View style={styles.statsContainer}>
         <View style={styles.stat}>
+          <Text style={styles.statAmount}>12</Text>
+          <Text style={styles.statTitle}>Posts</Text>
+        </View>
+        <View style={styles.stat}>
           <Text style={styles.statAmount}>21</Text>
           <Text style={styles.statTitle}>Eventos</Text>
         </View>
@@ -49,23 +53,10 @@ const ProfileScreen = ({ uid }) => {
           <Text style={styles.statAmount}>52</Text>
           <Text style={styles.statTitle}>Seguidores</Text>
         </View>
-        <View style={styles.stat}>
-          <Text style={styles.statAmount}>12</Text>
-          <Text style={styles.statTitle}>Posts</Text>
-        </View>
       </View>
 
 
-
-      <TouchableOpacity
-        style={styles.logoutButton}
-        onPress={() => {
-          Fire.shared.signOut();
-        }}
-      >
-        <Text style={styles.logoutButtonText}>Sair</Text>
-      </TouchableOpacity>
-      <View style={{ marginTop: 20, marginBottom: 20, alignItems: 'center' }}>
+      <View style={{ marginBottom: 20, alignItems: 'center' }}>
         <View
           style={{
             backgroundColor: '#1C1C1E',

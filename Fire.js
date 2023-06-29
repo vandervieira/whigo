@@ -31,6 +31,8 @@ class Fire {
           latitude,
           longitude,
           description,
+          peopleInterested: 0,
+          peopleGoing: 0,
         })
         .then((ref) => {
           res(ref);
