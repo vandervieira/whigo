@@ -22,20 +22,18 @@ class FeedScreen extends React.Component {
   }
 
   fetchPosts = () => {
+    console.log("Fetching posts...")
     // Recupera os posts da coleção "posts" e os ordena pelo timestamp
     firestore()
       .collection("posts")
-      .orderBy("timestamp", "desc") // Ordena pelo campo "timestamp" em ordem decrescente
+      .orderBy("timestamp", "desc")
       .get()
       .then((querySnapshot) => {
         const posts = [];
         querySnapshot.forEach((doc) => {
           const post = doc.data();
-
-          // Recupera o UID do usuário do post
           const uid = post.uid;
 
-          // Recupera os dados do usuário correspondente usando o UID como ID do documento
           firestore()
             .collection("users")
             .doc(uid)
@@ -45,8 +43,8 @@ class FeedScreen extends React.Component {
 
               // Adiciona os dados do usuário ao objeto de post
               post.id = doc.id;
-              post.name = user.name;
-              post.avatar = user.avatar;
+              post.name = user?.name;
+              post.avatar = user?.avatar;
 
               // Adiciona o post ao array de posts
               posts.push(post);

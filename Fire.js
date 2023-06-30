@@ -3,6 +3,46 @@ import auth from "@react-native-firebase/auth";
 import storage from "@react-native-firebase/storage";
 
 class Fire {
+  addEvent = async ({ localUri, name, category, visibility, startDateTime, endDateTime, cep, city, stateAddress, neighborhood, address, addressNumber, fullAddress, latitude, longitude, description }) => {
+    let remoteUri = null;
+    if (localUri) {
+      remoteUri = await this.uploadPhotoAsync(localUri, `eventImages/${this.uid}/${Date.now()}`);
+    }
+
+    return new Promise((res, rej) => {
+      this.firestore
+        .collection("events")
+        .add({
+          uid: this.uid,
+          timestamp: this.timestamp,
+          image: remoteUri ? remoteUri : null,
+          name,
+          category,
+          visibility,
+          startDateTime,
+          endDateTime,
+          cep,
+          city,
+          stateAddress,
+          neighborhood,
+          address,
+          addressNumber,
+          fullAddress,
+          latitude,
+          longitude,
+          description,
+          peopleInterested: 0,
+          peopleGoing: 0,
+        })
+        .then((ref) => {
+          res(ref);
+        })
+        .catch((error) => {
+          rej(error);
+        });
+    });
+  };
+
   addPost = async ({ text, localUri }) => {
     let remoteUri = null;
     if (localUri) {
@@ -30,10 +70,9 @@ class Fire {
   uploadPhotoAsync = async (uri, filename) => {
     return new Promise(async (res, rej) => {
       let upload = storage().ref(filename).putFile(uri);
-
       upload.on(
         "state_changed",
-        (snapshot) => {},
+        (snapshot) => { },
         (err) => {
           rej(err);
         },
@@ -45,25 +84,9 @@ class Fire {
     });
   };
 
-  createUser = async (user) => {
+  createUser = async (uid, user) => {
     let remoteUri = null;
-    await auth()
-      .createUserWithEmailAndPassword(user.email, user.password)
-      .catch((error) => {
-        if (error.code === "auth/email-already-in-use") {
-          this.setState({ errorMessage: "Este email já está em uso." });
-        } else if (error.code === "auth/invalid-email") {
-          this.setState({ errorMessage: "Email inválido." });
-        } else if (error.code === "auth/weak-password") {
-          this.setState({ errorMessage: "Senha muito fraca." });
-        } else if (error.code === "auth/wrong-password") {
-          this.setState({ errorMessage: "Senha incorreta." });
-        } else {
-          this.setState({ errorMessage: error.code });
-        }
-      });
-
-    let db = this.firestore.collection("users").doc(this.uid);
+    let db = this.firestore.collection("users").doc(uid); // Usar o uid fornecido como argumento
 
     db.set({
       name: user.name,
@@ -72,11 +95,12 @@ class Fire {
     });
 
     if (user.avatar) {
-      remoteUri = await this.uploadPhotoAsync(user.avatar, `avatars/${this.uid}`);
+      remoteUri = await this.uploadPhotoAsync(user.avatar, `avatars/${uid}`);
 
       db.set({ avatar: remoteUri }, { merge: true });
     }
   };
+
 
   signOut = () => {
     auth().signOut();

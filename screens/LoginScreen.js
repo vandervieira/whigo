@@ -38,37 +38,41 @@ export default class LoginScreen extends React.Component {
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content"></StatusBar>
-
+        
+        {/* Header image */}
         <Image
           source={require("../assets/authHeader.png")}
           style={{
-            width: 450,
-            height: 300,
-            resizeMode: "stretch",
-            marginTop: -100,
-            marginLeft: -20,
+            width: 500,
+            height: 450,
+            resizeMode: "cover",
+            marginTop: -180,
+            marginLeft: -50,
           }}
         ></Image>
 
+        {/* Footer image */}
         <Image
           source={require("../assets/authFooter.png")}
           style={{
             position: "absolute",
             width: 470,
             height: 300,
-            resizeMode: "stretch",
+            resizeMode: "cover",
             bottom: -140,
             right: -40,
           }}
         ></Image>
 
+        {/* Logo */}
         <Image
           source={require("../assets/loginLogo.png")}
           style={{
-            marginTop: -40,
+            marginTop: -50,
             alignSelf: "center",
-            width: 200,
-            height: 200,
+            resizeMode: "contain",
+            width: 300,
+            height: 130,
           }}
         ></Image>
 
@@ -129,7 +133,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   errorMessage: {
-    height: 72,
+    marginVertical: 10,
+    height: 90,
     alignItems: "center",
     justifyContent: "center",
     marginHorizontal: 30,
@@ -142,7 +147,7 @@ const styles = StyleSheet.create({
     marginBottom: 60,
   },
   form: {
-    marginTop: -40,
+    marginTop: -60,
     marginBottom: 10,
     marginHorizontal: 30,
   },

@@ -3,27 +3,31 @@ import { View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import MapScreen from "../screens/MapScreen";
+import MapRealtimeScreen from "../screens/MapRealtimeScreen";
 import FeedScreen from "../screens/FeedScreen";
 import SearchEventsScreen from "../screens/SearchEventsScreen";
+import { useRoute } from "@react-navigation/native";
 
 const Tab = createBottomTabNavigator();
-const TabNavigator = () => (
-  <Tab.Navigator
-    initialRouteName="WHIGO"
-    screenOptions={{
-      headerShown: false,
-      tabBarActiveTintColor: "#7878F5",
-      tabBarInactiveTintColor: "#666666",
-      tabBarShowLabel: false,
-      tabBarStyle: {
-        backgroundColor: "#1C1C1E",
-      },
-      headerStyle: {
-        backgroundColor: "#1C1C1E",
-      },
-    }}
-  >
+const TabNavigator = () => {
+  const route = useRoute();
+  const screenName = route.name;
+  return (
+    <Tab.Navigator
+      initialRouteName="WHIGO"
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: "#7878F5",
+        tabBarInactiveTintColor: "#666666",
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          backgroundColor: "#1C1C1E",
+        },
+        headerStyle: {
+          backgroundColor: "#1C1C1E",
+        },
+      }}
+    >
       <Tab.Screen
         name="Feed"
         component={FeedScreen}
@@ -35,7 +39,7 @@ const TabNavigator = () => (
       />
       <Tab.Screen
         name="WHIGO"
-        component={MapScreen}
+        component={MapRealtimeScreen}
         options={{
           tabBarLabel: "WHIGO",
           tabBarIcon: ({ color }) => (
@@ -72,7 +76,8 @@ const TabNavigator = () => (
           tabBarIcon: ({ color }) => <Ionicons name="search" color={color} size={35} style={{ marginBottom: -20 }} />,
         }}
       />
-  </Tab.Navigator>
-);
+    </Tab.Navigator>
+  )
+};
 
 export default TabNavigator;
