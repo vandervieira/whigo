@@ -34,7 +34,7 @@ const ProfileScreen = ({ uid }) => {
             source={
               user.avatar
                 ? { uri: user.avatar }
-                : require("../assets/tempAvatar.jpg")
+                : require("../assets/mocks/tempAvatar.jpg")
             }
           />
         </View>

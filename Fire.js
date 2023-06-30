@@ -70,7 +70,6 @@ class Fire {
   uploadPhotoAsync = async (uri, filename) => {
     return new Promise(async (res, rej) => {
       let upload = storage().ref(filename).putFile(uri);
-
       upload.on(
         "state_changed",
         (snapshot) => { },
@@ -85,25 +84,9 @@ class Fire {
     });
   };
 
-  createUser = async (user) => {
+  createUser = async (uid, user) => {
     let remoteUri = null;
-    await auth()
-      .createUserWithEmailAndPassword(user.email, user.password)
-      .catch((error) => {
-        if (error.code === "auth/email-already-in-use") {
-          this.setState({ errorMessage: "Este email já está em uso." });
-        } else if (error.code === "auth/invalid-email") {
-          this.setState({ errorMessage: "Email inválido." });
-        } else if (error.code === "auth/weak-password") {
-          this.setState({ errorMessage: "Senha muito fraca." });
-        } else if (error.code === "auth/wrong-password") {
-          this.setState({ errorMessage: "Senha incorreta." });
-        } else {
-          this.setState({ errorMessage: error.code });
-        }
-      });
-
-    let db = this.firestore.collection("users").doc(this.uid);
+    let db = this.firestore.collection("users").doc(uid); // Usar o uid fornecido como argumento
 
     db.set({
       name: user.name,
@@ -112,11 +95,12 @@ class Fire {
     });
 
     if (user.avatar) {
-      remoteUri = await this.uploadPhotoAsync(user.avatar, `avatars/${this.uid}`);
+      remoteUri = await this.uploadPhotoAsync(user.avatar, `avatars/${uid}`);
 
       db.set({ avatar: remoteUri }, { merge: true });
     }
   };
+
 
   signOut = () => {
     auth().signOut();

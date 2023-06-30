@@ -55,7 +55,7 @@ const PostScreen = ({ onClose }) => {
 
       <View style={styles.inputContainer}>
         <Image
-          source={userAvatar ? { uri: userAvatar } : require("../assets/tempAvatar.jpg")}
+          source={userAvatar ? { uri: userAvatar } : require("../assets/mocks/tempAvatar.jpg")}
           style={styles.avatar}
         />
         <TextInput

@@ -2,55 +2,41 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, TouchableOpacity, StyleSheet, Text, Image } from 'react-native';
 import MapView, { Callout, CalloutSubview, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { useNavigation } from '@react-navigation/native';
-import { defaultScreen } from '../styles/general';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { Ionicons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { mapStyle, customMap } from '../styles/map';
 import Fire from "../Fire";
 import {
     requestForegroundPermissionsAsync,
     getCurrentPositionAsync,
-    LocationObject,
     watchPositionAsync,
     LocationAccuracy
 } from 'expo-location';
 
 
 const markerIconByCategorie = {
-    "Festa": "#FFC107",
-    "Show": "#2196F3",
-    "Aniversário": "#E91E63",
-    "Churrasco": "#FF5722",
-    "Palestra": "#4CAF50"
+    "Festa": require("../assets/icons/fest.png"),
+    "Show": require("../assets/icons/show.png"),
+    "Aniversário": require("../assets/icons/bday.png"),
+    "Churrasco": require("../assets/icons/barbecue.png"),
+    "Palestra": require("../assets/icons/talk.png"),
 };
+
 
 const MapRealTime = () => {
     const [location, setLocation] = useState(null);
     const mapRef = useRef(null);
     const [allEvents, setAllEvents] = useState([]);
     const navigation = useNavigation();
+    const isFocused = useIsFocused();
 
 
     handleCenterCamera = () => {
         mapRef.current.animateCamera({
-            // pitch: 70,
             center: location.coords,
             zoom: 14.721086502075195
         })
-    };
-
-    handleCenterCameraToEvent = (eventID) => {
-        const event = allEvents.find(event => event.id === eventID);
-        latitudeAdjusted = event.latitude - 0.0008;
-        mapRef.current.animateCamera({
-            center: {
-                latitude: latitudeAdjusted,
-                longitude: event.longitude,
-            },
-            zoom: 18
-        })
-        console.log("Atual", event.latitude, " new ", latitudeAdjusted)
-        console.log(mapRef.current.getCamera().latitude)
     };
 
     handleNavigateToEventScreen = (eventID) => {
@@ -73,8 +59,10 @@ const MapRealTime = () => {
                 console.log('Erro ao buscar documentos:', error);
             });
         };
-        fetchAllEvents();
-    }, []);
+        if (isFocused) {
+            fetchAllEvents();
+        }
+    }, [isFocused]);
 
     useEffect(() => {
         (async () => {
@@ -100,7 +88,7 @@ const MapRealTime = () => {
     }, []);
 
     return (
-        <View style={defaultScreen.container}>
+        <View style={styles.container}>
 
             {
                 location &&
@@ -135,9 +123,7 @@ const MapRealTime = () => {
                                     latitude: event.latitude,
                                     longitude: event.longitude
                                 }}
-                                pinColor={markerIconByCategorie[event.category]}
-                            // icon={require('../assets/mocks/event1.png')}
-
+                                image={markerIconByCategorie[event.category]}
                             >
                                 <Callout tooltip
                                 >
@@ -146,7 +132,7 @@ const MapRealTime = () => {
                                             <View style={styles.textView}>
                                                 <Image
                                                     style={styles.image}
-                                                    source={event.image ? { uri: event.image } : require('../assets/mocks/event1.png')}
+                                                    source={event.image ? { uri: event.image } : require('../assets/mocks/eventmock.jpg')}
                                                 />
                                                 <Text style={styles.title}>{event.name}</Text>
                                                 <View style={{ flexDirection: "row" }}>
@@ -158,9 +144,6 @@ const MapRealTime = () => {
                                                     <CalloutSubview style={styles.seeMoreButton} onPress={() => handleNavigateToEventScreen(event.id)}>
                                                         <Text style={styles.seeMore}>Ver mais</Text>
                                                     </CalloutSubview>
-                                                    {/* <CalloutSubview style={styles.goLocationButton} onPress={() => handleCenterCameraToEvent(event.id)}>
-                                                        <Ionicons name="md-navigate-circle-outline" size={10} color="#7878F5" />
-                                                    </CalloutSubview> */}
                                                 </View>
                                             </View>
                                         </View>
@@ -173,7 +156,7 @@ const MapRealTime = () => {
                     }
 
                     <TouchableOpacity style={styles.centralizeCameraButton} onPress={handleCenterCamera}>
-                        <Ionicons name="md-navigate-circle-outline" size={40} color="#7878F5" />
+                        <MaterialIcons name="my-location" size={35} color="#7878F5" />
                     </TouchableOpacity>
                 </MapView>
             }
@@ -184,15 +167,23 @@ const MapRealTime = () => {
 export default MapRealTime;
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     centralizeCameraButton: {
         borderRadius: 50,
-        width: 50,
-        height: 50,
+        zIndex: 1,
+        width: 40,
+        height: 40,
         position: "absolute",
         bottom: 16,
         right: 16,
         justifyContent: "center",
         alignItems: "center",
+        top: "auto", // Adicione esta linha
     },
     bubble: {
         flexDirection: 'row',

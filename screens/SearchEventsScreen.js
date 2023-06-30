@@ -5,28 +5,6 @@ import Fire from "../Fire";
 import moment from "moment";
 import { useNavigation } from "@react-navigation/native";
 
-// Dados de exemplo
-const eventosProximos = [
-  {
-    id: 1,
-    titulo: "Gusttavo Lima em Porto Alegre! Não perca esse evento que vai lotar a grande capital!",
-    data: "Hoje",
-    imagem: require("../assets/mocks/event1.png"),
-  },
-  {
-    id: 2,
-    titulo: "Virada Mágina praia do Rosa, maior virada do litoral caterinense!",
-    data: "02 Jun",
-    imagem: require("../assets/mocks/event2.png"),
-  },
-  {
-    id: 3,
-    titulo: "Tardezinha em Porto Alegre chegou!",
-    data: "03 Jul",
-    imagem: require("../assets/mocks/event3.png"),
-  },
-];
-
 const Evento = ({ event, onSearch }) => (
   <View style={styles.eventoContainer(onSearch ? onSearch : null)}>
     <TouchableOpacity onPress={() => handleNavigateToEventScreen(event.id)}>

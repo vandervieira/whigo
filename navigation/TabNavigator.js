@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import MapScreen from "../screens/MapScreen";
+import MapRealtimeScreen from "../screens/MapRealtimeScreen";
 import FeedScreen from "../screens/FeedScreen";
 import SearchEventsScreen from "../screens/SearchEventsScreen";
 import { useRoute } from "@react-navigation/native";
@@ -39,7 +39,7 @@ const TabNavigator = () => {
       />
       <Tab.Screen
         name="WHIGO"
-        component={MapScreen}
+        component={MapRealtimeScreen}
         options={{
           tabBarLabel: "WHIGO",
           tabBarIcon: ({ color }) => (
