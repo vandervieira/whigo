@@ -3,7 +3,7 @@ import auth from "@react-native-firebase/auth";
 import storage from "@react-native-firebase/storage";
 
 class Fire {
-  addEvent = async ({ localUri, name, category, visibility, startDateTime, endDateTime, cep, city, stateAddress, neighborhood, address, addressNumber, fullAddress, latitude, longitude, description }) => {
+  addEvent = async ({ localUri, name, category, visibility, cep, city, stateAddress, neighborhood, address, addressNumber, fullAddress, latitude, longitude, description }) => {
     let remoteUri = null;
     if (localUri) {
       remoteUri = await this.uploadPhotoAsync(localUri, `eventImages/${this.uid}/${Date.now()}`);
@@ -19,8 +19,6 @@ class Fire {
           name,
           category,
           visibility,
-          startDateTime,
-          endDateTime,
           cep,
           city,
           stateAddress,

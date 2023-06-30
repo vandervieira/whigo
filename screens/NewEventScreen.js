@@ -94,7 +94,7 @@ const CreateEventScreen = () => {
     const formattedDateTime = `${formattedDate} as ${formattedTime}`;
 
     if (pickerType === "start") {
-      setStartDateTime(date);
+      setStartDateTime(formattedDateTime);
       hideDateTimePicker("start");
     } else if (pickerType === "end") {
       setEndDateTime(formattedDateTime);
