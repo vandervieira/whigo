@@ -20,9 +20,6 @@ O Whigo é um projeto de estudos desenvolvido para a disciplina de Sistemas Mobi
 - Integração com a API do ViaCep para obter dados de endereço a partir do CEP.
 - Utilização da API do Google Geocode para obter coordenadas geográficas com base no endereço recebido do ViaCep.
 
-## Screenshots
-![Screens do app](http://vandervieira.com.br/whigo.gif)
-
 ## Como executar o projeto localmente
 > O projeto ainda está em desenvolvimento para estudos, portanto pode apresentar comportamentos inesperados (bugs)
 
